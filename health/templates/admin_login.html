@@ -1,0 +1,265 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body %}
+<style>
+    .login-card {
+        background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+        border-radius: 15px;
+        padding: 40px;
+        margin: 20px auto;
+        max-width: 500px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #333;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .login-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #e74c3c, #c0392b);
+        transition: all 0.3s ease;
+    }
+    
+    .login-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        border-color: #e74c3c;
+    }
+    
+    .form-control {
+        background-color: #333;
+        border: 1px solid #444;
+        color: #fff;
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        background-color: #3a3a3a;
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+        color: #fff;
+    }
+    
+    .form-label {
+        color: #e74c3c;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .btn-login {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .btn-login:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+    }
+    
+    .register-link {
+        color: #e74c3c;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+    
+    .register-link:hover {
+        color: #c0392b;
+        text-decoration: underline;
+    }
+    
+    .login-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .login-header h3 {
+        color: #e74c3c;
+        font-weight: 700;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .login-header h3::after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        background: linear-gradient(90deg, #e74c3c, #c0392b);
+        bottom: 0;
+        left: 25%;
+        border-radius: 3px;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    
+    .input-group-text {
+        background-color: #333;
+        border: 1px solid #444;
+        color: #e74c3c;
+    }
+    
+    .forgot-password {
+        text-align: right;
+        margin-top: -10px;
+        margin-bottom: 20px;
+    }
+    
+    .forgot-password a {
+        color: #e74c3c;
+        font-size: 0.9em;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .forgot-password a:hover {
+        color: #c0392b;
+        text-decoration: underline;
+    }
+    
+    .login-footer {
+        text-align: center;
+        margin-top: 2rem;
+        color: #888;
+    }
+    
+    .admin-note {
+        background: rgba(231, 76, 60, 0.1);
+        border-left: 4px solid #e74c3c;
+        padding: 12px 15px;
+        margin: 20px 0;
+        border-radius: 0 5px 5px 0;
+        font-size: 0.9em;
+    }
+</style>
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+{% endif %}
+
+{% if error == "pat" %}
+<script>
+    alert('Logged in successfully');
+    window.location = '{% url "admin_home" %}';
+</script>
+{% endif %}
+
+{% if error == "notmember" %}
+<script>
+    alert('Your information is pending. Please update your profile first, then continue this service');
+    window.location = '{% url "service_home" %}';
+</script>
+{% endif %}
+{% if error == "pat2" %}
+<script>
+    alert('Logged in successfully');
+    window.location = '{% url "admin_home" %}';
+</script>
+{% endif %}
+{% if error == "not" %}
+<script>
+    alert('Username & Password are not Matching');
+</script>
+{% endif %}
+
+<section class="py-5" style="background: #1a1a1a; min-height: calc(100vh - 76px); display: flex; align-items: center; margin-top: 76px;">
+    <div class="container" style="padding-top: 20px; padding-bottom: 20px;">
+        <div class="login-card">
+            <div class="login-header">
+                <h3 class="text-uppercase">Admin Portal</h3>
+                <p class="text-muted">Restricted Access - Authorized Personnel Only</p>
+            </div>
+            
+            <div class="admin-note">
+                <i class="fas fa-shield-alt me-2"></i> Please use your admin credentials to access the dashboard
+            </div>
+            
+            <form action="" method="post" class="mt-4">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label">Admin Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user-shield"></i></span>
+                        <input type="text" class="form-control" name="uname" placeholder="Enter admin username" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label">Password</label>
+                        <a href="#" class="forgot-password">
+                            <small>Forgot Password?</small>
+                        </a>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-control" name="pwd" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label class="form-check-label" for="remember">Remember this device</label>
+                </div>
+                
+                <button type="submit" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt me-2"></i> Admin Login
+                </button>
+                
+                <div class="login-footer mt-4">
+                    <p class="mb-0">
+                        <a href="{% url 'login' %}" class="register-link">
+                            <i class="fas fa-arrow-left me-1"></i> Back to User Login
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Add animation to form elements on focus
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'translateY(-2px)';
+            this.parentElement.style.transition = 'all 0.3s ease';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'translateY(0)';
+        });
+    });
+</script>
+
+{% endblock %}

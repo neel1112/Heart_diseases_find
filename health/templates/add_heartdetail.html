@@ -1,0 +1,302 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block head %}
+{{ block.super }}
+<style>
+    .form-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: none;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    
+    .form-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .form-card .card-header {
+        background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%);
+        color: white;
+        border-bottom: none;
+        padding: 20px 25px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+    
+    .form-card .card-body {
+        padding: 30px;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-control {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+        height: auto;
+        box-shadow: none;
+    }
+    
+    .form-control:focus {
+        border-color: #9d50bb;
+        box-shadow: 0 0 0 0.2rem rgba(157, 80, 187, 0.25);
+    }
+    
+    .form-control:hover {
+        border-color: #bdbdbd;
+    }
+    
+    label {
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%);
+        border: none;
+        padding: 12px 40px;
+        border-radius: 50px;
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .btn-submit:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #9d50bb 0%, #6e48aa 100%);
+        transition: all 0.4s ease;
+        z-index: -1;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        color: white;
+    }
+    
+    .btn-submit:hover:before {
+        left: 0;
+    }
+    
+    .section-title {
+        position: relative;
+        margin-bottom: 40px;
+        color: #4a4a4a;
+    }
+    
+    .section-title:after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%);
+        margin: 15px auto 0;
+        border-radius: 2px;
+    }
+    
+    @media (max-width: 768px) {
+        .form-card {
+            margin: 15px;
+        }
+        
+        .card-body {
+            padding: 20px 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="text-center section-title">Add Heart Health Details</h2>
+            
+            <form action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <!-- Personal Information Card -->
+                <div class="card form-card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-user-circle me-2"></i> Personal Information
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Age (Years)</label>
+                                <input type="number" class="form-control" name="age" min="0" max="120" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Sex</label>
+                                <select class="form-control" name="sex" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Heart Health Metrics Card -->
+                <div class="card form-card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-heartbeat me-2"></i> Heart Health Metrics
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Resting Blood Pressure (mm Hg)</label>
+                                <input type="number" class="form-control" name="trestbps" min="0" max="250" required>
+                                <small class="text-muted">Typical range: 90-120 mm Hg</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Cholesterol (mg/dl)</label>
+                                <input type="number" class="form-control" name="chole" min="100" max="600" required>
+                                <small class="text-muted">Desirable: < 200 mg/dl</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Max Heart Rate (bpm)</label>
+                                <input type="number" class="form-control" name="thalach" min="60" max="220" required>
+                                <small class="text-muted">Typical max: 220 - age</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>ST Depression (Oldpeak)</label>
+                                <input type="number" step="0.1" class="form-control" name="old_peak" min="0" max="10" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Medical Information Card -->
+                <div class="card form-card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-clipboard-check me-2"></i> Medical Information
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Chest Pain Type</label>
+                                <select class="form-control" name="cp" required>
+                                    <option value="">Select Pain Type</option>
+                                    <option value="0">Typical Angina</option>
+                                    <option value="1">Atypical Angina</option>
+                                    <option value="2">Non-anginal Pain</option>
+                                    <option value="3">Asymptomatic</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Fasting Blood Sugar > 120 mg/dl</label>
+                                <select class="form-control" name="fbs" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Resting ECG</label>
+                                <select class="form-control" name="restecg" required>
+                                    <option value="">Select ECG Result</option>
+                                    <option value="0">Normal</option>
+                                    <option value="1">ST-T Wave Abnormality</option>
+                                    <option value="2">Left Ventricular Hypertrophy</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Exercise Induced Angina</label>
+                                <select class="form-control" name="exang" required>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Advanced Metrics Card -->
+                <div class="card form-card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line me-2"></i> Advanced Metrics
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Slope of Peak Exercise ST</label>
+                                <select class="form-control" name="slope" required>
+                                    <option value="">Select Slope</option>
+                                    <option value="0">Upsloping</option>
+                                    <option value="1">Flat</option>
+                                    <option value="2">Downsloping</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Major Vessels (0-3)</label>
+                                <input type="number" class="form-control" name="ca" min="0" max="3" required>
+                                <small class="text-muted">Number of major vessels colored by fluoroscopy</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Thalassemia</label>
+                                <select class="form-control" name="thal" required>
+                                    <option value="">Select Thalassemia Type</option>
+                                    <option value="1">Normal</option>
+                                    <option value="2">Fixed Defect</option>
+                                    <option value="3">Reversible Defect</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-submit btn-lg px-5">
+                        <i class="fas fa-paper-plane me-2"></i> Submit Heart Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Form Validation Script -->
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+  
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+  
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+{% endblock %}

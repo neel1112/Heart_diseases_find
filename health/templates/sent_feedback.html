@@ -1,0 +1,211 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block body %}
+<style>
+    .feedback-container {
+        max-width: 700px;
+        margin: 15% auto 5%;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .feedback-container:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+    }
+    
+    .feedback-header {
+        background: linear-gradient(135deg, #4b6cb7, #182848);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .feedback-header h2 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+    
+    .feedback-body {
+        padding: 2.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.8rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-group:hover {
+        transform: translateX(5px);
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.8rem;
+        color: #4b6cb7;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 1rem 1.2rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .form-control:focus {
+        border-color: #4b6cb7;
+        box-shadow: 0 0 0 0.2rem rgba(75, 108, 183, 0.25);
+        transform: translateY(-2px);
+    }
+    
+    .form-control:hover {
+        border-color: #8a9ac7;
+    }
+    
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #4b6cb7, #182848);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+        margin: 2rem auto 0;
+        display: block;
+        text-align: center;
+        cursor: pointer;
+        font-size: 1rem;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .btn-submit:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #182848, #4b6cb7);
+        transition: all 0.4s ease;
+        z-index: -1;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(75, 108, 183, 0.3);
+    }
+    
+    .btn-submit:hover:before {
+        left: 0;
+    }
+    
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #4b6cb7;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0 auto 1.5rem;
+        text-transform: uppercase;
+    }
+    
+    @media (max-width: 768px) {
+        .feedback-container {
+            margin: 10% 3%;
+            width: auto;
+        }
+        
+        .feedback-body {
+            padding: 1.5rem;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+    
+    /* Animation for feedback submission */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .feedback-form {
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+</style>
+
+{% if terror == "create" %}
+<script>
+    alert('Feedback sent successfully');
+    window.location = '{% url "sent_feedback" %}';
+</script>
+{% endif %}
+
+<div class="feedback-container">
+    <div class="feedback-header">
+        <h2>Share Your Feedback</h2>
+        <p>We value your opinion and would love to hear from you</p>
+    </div>
+    
+    <div class="feedback-body">
+        <div class="user-avatar">
+            {{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}
+        </div>
+        
+        <form action="" method="post" enctype="multipart/form-data" class="feedback-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="username">Your Username</label>
+                <input type="text" class="form-control" id="username" name="uname" 
+                       value="{{ request.user.username }}" required readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="message">Your Valuable Feedback</label>
+                <textarea class="form-control" id="message" name="msg" 
+                          placeholder="Share your thoughts, suggestions, or report any issues..." 
+                          required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane mr-2"></i>Send Feedback
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

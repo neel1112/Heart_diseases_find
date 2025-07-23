@@ -1,0 +1,500 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block head %}
+{{ block.super }}
+<style>
+    /* Modern Dashboard Styles */
+    .dashboard-container {
+        margin-top: 100px;
+        padding: 20px;
+    }
+    
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+    
+    .dashboard-header h1 {
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .dashboard-header h1:after {
+        content: '';
+        position: absolute;
+        width: 60%;
+        height: 4px;
+        background: linear-gradient(90deg, #3498db, #9b59b6);
+        bottom: -10px;
+        left: 20%;
+        border-radius: 2px;
+    }
+    
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    
+    .dashboard-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: none;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+    
+    .card-icon {
+        position: absolute;
+        top: -20px;
+        right: 20px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .dashboard-card:hover .card-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .card-content {
+        padding: 25px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+    
+    .card-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 15px 0;
+        color: #2c3e50;
+    }
+    
+    .card-description {
+        color: #95a5a6;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+    
+    .card-link {
+        display: inline-flex;
+        align-items: center;
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .card-link:hover {
+        color: #2980b9;
+        transform: translateX(5px);
+    }
+    
+    .card-link i {
+        margin-left: 5px;
+        transition: transform 0.3s ease;
+    }
+    
+    .card-link:hover i {
+        transform: translateX(3px);
+    }
+    
+    .welcome-section {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        margin-top: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .welcome-section:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #3498db, #9b59b6);
+    }
+    
+    .welcome-section h1 {
+        font-size: 2.2rem;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    
+    .welcome-section p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    /* Card specific colors */
+    .card-doctors { border-top: 4px solid #3498db; }
+    .card-doctors .card-icon { background: #3498db; }
+    
+    .card-patients { border-top: 4px solid #2ecc71; }
+    .card-patients .card-icon { background: #2ecc71; }
+    
+    .card-feedback { border-top: 4px solid #9b59b6; }
+    .card-feedback .card-icon { background: #9b59b6; }
+    
+    .card-searches { border-top: 4px solid #e74c3c; }
+    .card-searches .card-icon { background: #e74c3c; }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .dashboard-container {
+            margin-top: 80px;
+            padding: 15px;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2rem;
+        }
+        
+        .card-value {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Using Font Awesome CDN that supports CORS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* Modern Dashboard Styles */
+    .dashboard-container {
+        margin-top: 100px;
+        padding: 20px;
+    }
+    
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+    
+    .dashboard-header h1 {
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .dashboard-header h1:after {
+        content: '';
+        position: absolute;
+        width: 60%;
+        height: 4px;
+        background: linear-gradient(90deg, #3498db, #9b59b6);
+        bottom: -10px;
+        left: 20%;
+        border-radius: 2px;
+    }
+    
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    
+    .dashboard-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: none;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+    
+    .card-icon {
+        position: absolute;
+        top: -20px;
+        right: 20px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .dashboard-card:hover .card-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .card-content {
+        padding: 25px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+    
+    .card-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 15px 0;
+        color: #2c3e50;
+    }
+    
+    .card-description {
+        color: #95a5a6;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+    
+    .card-link {
+        display: inline-flex;
+        align-items: center;
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .card-link:hover {
+        color: #2980b9;
+        transform: translateX(5px);
+    }
+    
+    .card-link i {
+        margin-left: 5px;
+        transition: transform 0.3s ease;
+    }
+    
+    .card-link:hover i {
+        transform: translateX(3px);
+    }
+    
+    .welcome-section {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        margin-top: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .welcome-section:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #3498db, #9b59b6);
+    }
+    
+    .welcome-section h1 {
+        font-size: 2.2rem;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    
+    .welcome-section p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    /* Card specific colors */
+    .card-doctors { border-top: 4px solid #3498db; }
+    .card-doctors .card-icon { background: #3498db; }
+    
+    .card-patients { border-top: 4px solid #2ecc71; }
+    .card-patients .card-icon { background: #2ecc71; }
+    
+    .card-feedback { border-top: 4px solid #9b59b6; }
+    .card-feedback .card-icon { background: #9b59b6; }
+    
+    .card-searches { border-top: 4px solid #e74c3c; }
+    .card-searches .card-icon { background: #e74c3c; }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .dashboard-container {
+            margin-top: 80px;
+            padding: 15px;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2rem;
+        }
+        
+        .card-value {
+            font-size: 2rem;
+        }
+    }
+</style>
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p class="text-muted">Welcome back! Here's what's happening with your system today.</p>
+    </div>
+    
+    <div class="dashboard-grid">
+        <!-- Doctors Card -->
+        <div class="dashboard-card card-doctors">
+            <div class="card-icon">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-title">Total Doctors</div>
+                <div class="card-value">{{doc}}</div>
+                <p class="card-description">Manage all doctor profiles and their access levels.</p>
+                <a href="{% url 'view_doctor' %}" class="card-link">
+                    View Details <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Patients Card -->
+        <div class="dashboard-card card-patients">
+            <div class="card-icon">
+                <i class="fas fa-procedures"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-title">Total Patients</div>
+                <div class="card-value">{{pat}}</div>
+                <p class="card-description">View and manage all patient records and history.</p>
+                <a href="{% url 'view_patient' %}" class="card-link">
+                    View Details <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Feedback Card -->
+        <div class="dashboard-card card-feedback">
+            <div class="card-icon">
+                <i class="fas fa-comment-alt"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-title">Total Feedback</div>
+                <div class="card-value">{{feed}}</div>
+                <p class="card-description">Read and respond to user feedback and suggestions.</p>
+                <a href="{% url 'view_feedback' %}" class="card-link">
+                    View Details <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Searches Card -->
+        <div class="dashboard-card card-searches">
+            <div class="card-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-title">Search Queries</div>
+                <div class="card-value">{{dis}}</div>
+                <p class="card-description">Analyze search patterns and user queries.</p>
+                <a href="{% url 'view_search_pat' %}" class="card-link">
+                    View Details <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="welcome-section">
+        <h1>Welcome, Admin!</h1>
+        <p>You're now in control of the Heart Disease Prediction System. Monitor system activity, manage users, and ensure everything runs smoothly. If you need any assistance, please don't hesitate to contact our support team.</p>
+    </div>
+</div>
+
+<!-- Using Font Awesome CDN that supports CORS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Add animations on scroll -->
+<script>
+    // Admin-specific animation function with unique name
+    function adminAnimateOnScroll() {
+        const cards = document.querySelectorAll('.dashboard-card');
+        
+        cards.forEach((card, index) => {
+            const cardPosition = card.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+            
+            if(cardPosition < screenPosition) {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            }
+        });
+    }
+    
+    // Set initial styles for animation
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.dashboard-card');
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        });
+        
+        // Initial check
+        adminAnimateOnScroll();
+    });
+    
+    // Check on scroll
+    window.addEventListener('scroll', adminAnimateOnScroll);
+</script>
+{% endblock %}

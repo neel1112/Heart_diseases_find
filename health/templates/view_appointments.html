@@ -1,0 +1,169 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">My Appointments</h4>
+                    <a href="{% url 'book_appointment' %}" class="btn btn-light">
+                        <i class="fas fa-plus me-1"></i> Book New Appointment
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if appointments %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Doctor</th>
+                                        <th>Specialty</th>
+                                        <th>Status</th>
+                                        <th>Symptoms</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for appointment in appointments %}
+                                    <tr>
+                                        <td>{{ appointment.appointment_date|date:"M d, Y" }}</td>
+                                        <td>{{ appointment.appointment_time|time:"h:i A" }}</td>
+                                        <td>Dr. {{ appointment.doctor.user.get_full_name }}</td>
+                                        <td>{{ appointment.doctor.category }}</td>
+                                        <td>
+                                            <span class="badge 
+                                                {% if appointment.status == 'confirmed' %}bg-success
+                                                {% elif appointment.status == 'cancelled' %}bg-danger
+                                                {% else %}bg-warning{% endif %}">
+                                                {{ appointment.status|title }}
+                                            </span>
+                                        </td>
+                                        <td>{{ appointment.symptoms|truncatewords:5 }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" 
+                                                data-bs-target="#detailsModal{{ appointment.id }}">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            {% if appointment.status == 'pending' %}
+                                                <a href="#" class="btn btn-sm btn-danger cancel-appointment" 
+                                                   data-id="{{ appointment.id }}">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Details Modal -->
+                                    <div class="modal fade" id="detailsModal{{ appointment.id }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-primary text-white">
+                                                    <h5 class="modal-title">Appointment Details</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <h6>Doctor Information</h6>
+                                                        <p class="mb-1"><strong>Name:</strong> Dr. {{ appointment.doctor.user.get_full_name }}</p>
+                                                        <p class="mb-1"><strong>Specialty:</strong> {{ appointment.doctor.category }}</p>
+                                                        <p class="mb-1"><strong>Contact:</strong> {{ appointment.doctor.contact }}</p>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <h6>Appointment Details</h6>
+                                                        <p class="mb-1"><strong>Date:</strong> {{ appointment.appointment_date|date:"F d, Y" }}</p>
+                                                        <p class="mb-1"><strong>Time:</strong> {{ appointment.appointment_time|time:"h:i A" }}</p>
+                                                        <p class="mb-1"><strong>Status:</strong> 
+                                                            <span class="badge 
+                                                                {% if appointment.status == 'confirmed' %}bg-success
+                                                                {% elif appointment.status == 'cancelled' %}bg-danger
+                                                                {% else %}bg-warning{% endif %}">
+                                                                {{ appointment.status|title }}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <h6>Symptoms / Reason</h6>
+                                                        <p>{{ appointment.symptoms }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    {% if appointment.status == 'pending' %}
+                                                        <a href="#" class="btn btn-danger cancel-appointment" 
+                                                           data-id="{{ appointment.id }}">
+                                                            Cancel Appointment
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <img src="{% static 'images/calendar.png' %}" alt="No appointments" class="img-fluid mb-4" style="max-height: 150px;">
+                            <h4>No Appointments Found</h4>
+                            <p class="text-muted">You don't have any appointments scheduled yet.</p>
+                            <a href="{% url 'book_appointment' %}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Book Your First Appointment
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Confirmation Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">Cancel Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this appointment?</p>
+                <p class="text-muted">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form id="cancelForm" method="post" action="">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Cancel Appointment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // Handle cancel appointment button click
+    document.addEventListener('DOMContentLoaded', function() {
+        const cancelButtons = document.querySelectorAll('.cancel-appointment');
+        const cancelForm = document.getElementById('cancelForm');
+        
+        cancelButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const appointmentId = this.getAttribute('data-id');
+                cancelForm.action = `/cancel_appointment/${appointmentId}/`;
+                
+                // Show the modal
+                const cancelModal = new bootstrap.Modal(document.getElementById('cancelModal'));
+                cancelModal.show();
+            });
+        });
+    });
+</script>
+{% endblock %}

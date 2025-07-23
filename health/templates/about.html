@@ -1,0 +1,201 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body %}
+
+<style>
+    .profile-card {
+        background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+        border-radius: 15px;
+        padding: 30px;
+        margin: 20px 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #333;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .profile-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(78, 154, 241, 0.1), rgba(97, 190, 188, 0.1));
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        border-color: #4e9af1;
+    }
+    
+    .profile-card:hover::before {
+        opacity: 1;
+    }
+    
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #4e9af1;
+        margin: 0 auto 20px;
+        display: block;
+        transition: all 0.5s ease;
+        transform: scale(0.95);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .profile-card:hover .profile-img {
+        transform: scale(1.05);
+        border-color: #61bebc;
+        box-shadow: 0 8px 25px rgba(78, 154, 241, 0.5);
+    }
+    
+    .profile-name {
+        color: #4e9af1;
+        font-size: 1.7rem;
+        font-weight: 700;
+        margin: 15px 0 10px;
+        transition: all 0.3s ease;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        letter-spacing: 0.5px;
+    }
+    
+    .profile-card:hover .profile-name {
+        color: #61bebc;
+        letter-spacing: 1px;
+    }
+    
+    .profile-title {
+        color: #61bebc;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .profile-title::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: #4e9af1;
+        bottom: -5px;
+        left: 0;
+        transition: width 0.3s ease;
+    }
+    
+    .profile-card:hover .profile-title::after {
+        width: 100%;
+    }
+    
+    .profile-desc {
+        color: #e0e0e0;
+        line-height: 1.7;
+        margin-bottom: 25px;
+        transition: all 0.5s ease;
+        position: relative;
+        padding: 0 10px;
+    }
+    
+    .social-links {
+        transition: all 0.5s ease;
+        transform: translateY(10px);
+        opacity: 0.8;
+    }
+    
+    .profile-card:hover .social-links {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .social-links a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        background: rgba(78, 154, 241, 0.1);
+        border-radius: 50%;
+        margin: 0 5px;
+        transition: all 0.3s ease;
+        color: #4e9af1 !important;
+    }
+    
+    .social-links a:hover {
+        background: #4e9af1;
+        color: white !important;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(78, 154, 241, 0.4);
+    }
+    
+    .about-section {
+        background: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(30, 30, 30, 0.8));
+        padding: 20px 30px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        border: 1px solid #333;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<section class="about py-5">
+    <div class="container py-xl-5 py-lg-3">
+        <div class="title-section mb-5">
+            <h1 class="w3ls-title text-uppercase text-center text-white font-weight-bold mb-4">About Our Team</h1>
+            <div class="about-section">
+                <p class="text-center mb-0">Our team of dedicated professionals is committed to revolutionizing healthcare through advanced machine learning technology. We combine medical expertise with cutting-edge AI to provide accurate heart disease predictions and improve patient outcomes.</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Male Profile Card -->
+            <div class="col-md-6 mb-4">
+                <div class="profile-card text-center">
+                    <img src="{% static 'images/male.png' %}" alt="Male Doctor" class="profile-img">
+                    <h3 class="profile-name">NEEL MERJA</h3>
+                    <p class="profile-title">Student of Computer Engineering</p>
+                    <p class="profile-desc">Currently persuing our last year in computer engineering from LDRP-ITR. I have knowlednge about HTML,CSS,ReactJS,Python & Machine learning also. Right now working on the full stack projects.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-primary me-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="#" class="text-primary me-2"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-primary"><i class="fas fa-envelope fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Female Profile Card -->
+            <div class="col-md-6 mb-4">
+                <div class="profile-card text-center">
+                    <img src="{% static 'images/female.png' %}" alt="Female Doctor" class="profile-img">
+                    <h3 class="profile-name">KRISHNA MODHAVADIYA</h3>
+                    <p class="profile-title">Student of Computer Engineering</p>
+                    <p class="profile-desc">Currently persuing our last year in computer engineering from LDRP-ITR. I have knowlednge about HTML,CSS,ReactJs,Python & Machine learning also. Right now working on the full stack development projects.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-primary me-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="#" class="text-primary me-2"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-primary"><i class="fas fa-envelope fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="about-section mt-4">
+            <h4 class="text-center mb-4" style="color: #61bebc;">Our Mission</h4>
+            <p class="text-center mb-0">To leverage the power of artificial intelligence in predicting heart diseases with high accuracy, enabling early intervention and personalized treatment plans for better patient outcomes.A heart disease prediction system uses patient data and machine learning algorithms to assess the risk of heart-related conditions. Creating such a website helps in early detection, empowering users to take preventive action and aiding doctors in faster diagnosis and treatment planning.</p>
+        </div>
+		</div>
+	</div>
+	</div>
+</section>
+
+
+{% endblock %}

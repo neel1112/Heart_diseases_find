@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zxx">
+
+<head>
+	<title>Heart Disease Prediction System</title>
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords" />
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<!-- Bootstrap-Core-CSS -->
+	<link href="{% static 'css/css_slider.css' %}" type="text/css" rel="stylesheet" media="all">
+	<!-- banner slider -->
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all" />
+	<!-- Style-CSS -->
+	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+	<!-- Font-Awesome-Icons-CSS -->
+	<!-- //Custom-Files -->
+
+	<!-- Web-Fonts -->
+	<link href="//fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Mukta:200,300,400,500,600,700,800&amp;subset=devanagari,latin-ext" rel="stylesheet">
+<!-- Web-Fonts -->
+<style>
+/* Modern Dark Theme */
+:root {
+    --primary-color: #2ca4b6;
+    --primary-hover: #1d8a9b;
+    --secondary-color: #2d2d2d;
+    --accent-color: #ff6b6b;
+    --text-color: #e0e0e0;
+    --bg-dark: #0a0a0a;
+    --card-bg: #1e1e1e;
+    --card-hover: #2a2a2a;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --box-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-color);
+    font-family: 'Mukta', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Card Styles */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid #333;
+    color: var(--text-color);
+    border-radius: 12px;
+    transition: var(--transition);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+    border-color: var(--primary-color);
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: var(--text-color);
+    border-radius: 8px;
+    padding: 12px 15px;
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #333;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(44, 164, 182, 0.25);
+    color: #fff;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: width 0.3s ease;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(44, 164, 182, 0.3);
+}
+
+/* Section Styling */
+.section {
+    padding: 80px 0;
+    position: relative;
+}
+
+.section-title {
+    position: relative;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.section-title h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title h2::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+}
+
+/* Feature Box */
+.feature-box {
+    padding: 30px;
+    border-radius: 12px;
+    background: var(--card-bg);
+    transition: var(--transition);
+    height: 100%;
+    border: 1px solid #333;
+}
+
+.feature-box i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    display: inline-block;
+    transition: var(--transition);
+}
+
+.feature-box h4 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--box-shadow-hover);
+    border-color: var(--primary-color);
+}
+
+.feature-box:hover i {
+    transform: scale(1.1);
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+}
+
+/* Back to Top Button */
+.move-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 999;
+}
+
+.move-top.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.move-top:hover {
+    background: var(--primary-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(44, 164, 182, 0.4);
+}
+
+/* Custom Cursor */
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-color);
+}
+
+.cursor-outline {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--primary-color);
+}
+
+.cursor-dot,
+.cursor-outline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .section {
+        padding: 60px 0;
+    }
+    
+    .section-title h2 {
+        font-size: 2rem;
+    }
+    
+    .feature-box {
+        margin-bottom: 30px;
+    }
+}
+
+/* Custom Animation Classes */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }
+
+/* Update table styles */
+.table {
+    color: #e0e0e0;
+}
+
+.table thead th {
+    background-color: #2d2d2d;
+    border-color: #444;
+}
+
+.table tbody td {
+    background-color: #333;
+    border-color: #444;
+}
+
+/* Update navbar */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.navbar {
+    background-color: #1a1a1a !important;
+    border-bottom: 1px solid #444;
+    position: fixed !important;
+    top: 0 !important;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 60px;
+}
+
+/* Reset all margins and padding that might cause gaps */
+html, body, header, .top-bar {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove top margin from the main content */
+#home {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.navbar a, .navbar .nav-link {
+    color: #fff !important;
+}
+
+.navbar .menu > li > a {
+    color: #fff !important;
+    padding: 0px 0px;
+}
+
+.navbar .menu > li > a:hover {
+    background-color: #333;
+    color: #4e9af1 !important;
+}
+
+.navbar .toggle + .menu {
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+    margin-top: 0px;
+} 
+
+.navbar .menu {
+    background-color: #1a1a1a;
+    margin-top: 0px;
+}
+
+/* Update buttons */
+.btn-outline-primary {
+    color: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-outline-primary:hover {
+    background-color: #4e73df;
+    color: #fff;
+}
+
+/* Update modal */
+.modal-content {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.modal-header {
+    border-bottom: 1px solid #444;
+}
+
+.modal-footer {
+    border-top: 1px solid #444;
+}
+
+/* Update text colors */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: #fff;
+}
+
+a {
+    color: #4e9af1;
+}
+
+a:hover {
+    color: #3a7bc8;
+}
+
+/* Custom class for red border */
+.li2 {
+    border: 1px solid red;
+    padding: 8px;
+}
+</style>
+
+<link rel='stylesheet' type='text/css' href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+<link rel='stylesheet' type='text/css' href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css">
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    } );
+} );
+</script>
+</head>
+
+<body>
+	<!-- main -->
+	<div id="home" style="margin-bottom:2%">
+		<!-- top header -->
+		<header>
+			<div class="top-bar py-3">
+				<div class="container">
+					<div class="row">
+						
+						<div class="col-xl-7 col-lg-6 col-md-4 top-social-agile text-md-right text-center mt-md-0 mt-2">
+							<div class="row">
+								<div class="offset-xl-6 offset-lg-4">
+								</div>
+								<div class="col-xl-3 col-lg-4 col-6 top-w3layouts p-md-0 text-right">
+									<!-- login -->
+									<a href="login.html" class="login-button-2 text-uppercase text-bl">
+										</a>
+									<!-- //login -->
+								</div>
+								<div class="col-xl-3 col-lg-4 col-6 header-w3layouts text-md-right text-left">
+									<!-- register -->
+									<a href="register.html" class="login-button-2 text-uppercase text-bl">
+										</a>
+									<!-- //register -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- //top header -->
+
+		<!-- second header -->
+		<div class="main-top" style="background:rgb(44, 164, 182)">
+			<div class="container-fluid">
+				<div class="header d-md-flex justify-content-between align-items-center py-3">
+					<!-- logo -->
+					<div id="logo" style="margin-left:5%">
+						<h1>
+							<a href="index.html">
+								<span class="fa fa-user-md mr-2"></span>
+								<span class="logo-sp">Heart Disease</span> Prediction
+							</a>
+						</h1>
+					</div>
+					<!-- //logo -->
+					<!-- nav -->
+					{% if request.user.is_staff %}
+					<div class="nav_w3ls" style="margin-right:2%;margin-left:2%">
+						<nav>
+							<label for="drop1" class="toggle">Menu</label>
+							<input type="checkbox" id="drop1" />
+							<ul class="menu" style="padding:5px;width:100%">
+
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2"><a href="{% url 'admin_home' %}" >Home</a></li>
+
+								<li>
+									<label for="drop-2" class="toggle toogle-2"> <span class="fa fa-angle-down" aria-hidden="true"></span>
+									</label>
+									<a href="#"> Doctor <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+									<ul style="margin-top:2%;width:40%;margin-right:0%">
+										<li style="width:100%;"><a href="/add_doctor" class="drop-text">Add Doctor</a></li>
+										<li style="width:100%;"><a href="/view_doctor" class="drop-text">View Doctor</a></li>
+									</ul>
+								</li>
+
+
+
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2"><a href="/view_patient">Patient</a></li>
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2">
+									<a href="/view_search_pat">Searched Data</a></li>
+								<li><a href="/view_feedback">Feedback</a></li>
+
+							</ul>
+						</nav>
+					</div>
+					<div class="nav_w3ls" style="margin-right:2%;margin-left:2%">
+
+						<nav>
+							<label for="drop2" class="toggle">Menu</label>
+							<input type="checkbox" id="drop2" />
+							<ul class="menu">
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2" style="background:red;padding:8px">
+									<!-- First Tier Drop Down -->
+									<label for="drop-2" class="toggle toogle-2"> <span class="fa fa-angle-down" aria-hidden="true"></span>
+									</label>
+									<a href="#"><i class="fa fa-user"></i> {{request.user.username}} <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+									<ul style="margin-top:10%;width:80%;margin-right:5%">
+										<li style="width:100%;"><a href="{% url 'change_password' %}" class="drop-text">Password</a></li>
+										<li style="width:100%;"><a href="{% url 'logout' %}" class="drop-text">Logout</a></li>
+									</ul>
+								</li>
+
+
+
+							</ul>
+						</nav>
+					</div>
+
+					{% elif request.user.patient_set.all.0 %}
+					<div class="nav_w3ls" style="margin-left:5%;font-weight:bold">
+						<nav>
+							<label for="drop3" class="toggle">Menu</label>
+							<input type="checkbox" id="drop3" />
+							<ul class="menu" style="padding:15px;width:100%">
+								<li><a href="{% url 'patient_home' %}" class="active">Home</a></li>
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2"><a href="{% url 'add_heartdetail' %}">Predict</a></li>
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2"><a href="{% url 'view_appointments' %}">My Appointments</a></li>
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2"><a href="{% url 'profile_doctor' %}">My Detail</a></li>
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2"><a href="{% url 'sent_feedback' %}">Feedback</a></li>
+								<li><a href="{% url 'view_search_pat' %}">History</a></li>
+							</ul>
+						</nav>
+					</div>
+					<div class="nav_w3ls" style="margin-right:2%;margin-left:2%">
+
+						<nav>
+							<label for="drop4" class="toggle">Menu</label>
+							<input type="checkbox" id="drop4" />
+							<ul class="menu">
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2" style="background:#6a6767;padding:8px">
+									<!-- First Tier Drop Down -->
+									<label for="drop-3" class="toggle toogle-3"> <span class="fa fa-angle-down" aria-hidden="true"></span>
+									</label>
+									<a href="#"><i class="fa fa-sign-in"></i> Hello,{{request.user.username}} <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+									<ul style="margin-top:8%;width:80%;margin-right:5%">
+										<li style="width:100%;"><a href="{% url 'change_password' %}" class="drop-text"> Password</a></li>
+										<li style="width:100%;"><a href="{% url 'logout' %}" class="drop-text"> Logout</a></li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+					</div>
+					{% elif request.user.doctor_set.all.0 %}
+					<div class="nav_w3ls" style="margin-right:2%;margin-left:2%">
+						<nav>
+							<label for="drop5" class="toggle">Menu</label>
+							<input type="checkbox" id="drop5" />
+							<ul class="menu" style="padding:15px;width:100%">
+								<li><a href="{% url 'doctor_home' %}" class="active">Home</a></li>
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2">
+									<a href="/profile_doctor">My Detail</a></li>
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2">
+									<a href="view_search_pat">Searched Data</a></li>
+
+							</ul>
+						</nav>
+					</div>
+					<div class="nav_w3ls" style="margin-right:2%;margin-left:2%">
+
+						<nav>
+							<label for="drop6" class="toggle">Menu</label>
+							<input type="checkbox" id="drop6" />
+							<ul class="menu">
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2" style="background:#6a6767;padding:8px">
+									<!-- First Tier Drop Down -->
+									<label for="drop6" class="toggle toogle-2"> <span class="fa fa-angle-down" aria-hidden="true"></span>
+									</label>
+									<a href="#"><i class="fa fa-user"></i> {{request.user.username}} <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+									<ul style="margin-top:10%;width:80%;margin-right:5%">
+										<li style="width:100%;"><a href="{% url 'change_password' %}" class="drop-text">Password</a></li>
+										<li style="width:100%;"><a href="{% url 'logout' %}" class="drop-text">Logout</a></li>
+									</ul>
+								</li>
+
+
+
+							</ul>
+						</nav>
+					</div>
+					{% else %}
+					<div class="nav_w3ls" style="margin-right:4%;margin-left: 2%;">
+						<nav>
+							<label for="drop7" class="toggle">Menu</label>
+							<input type="checkbox" id="drop7" />
+							<ul class="menu" style="padding:15px;width:100%">
+								<li><a href="{% url 'home' %}" class="active">Home</a></li>
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2">
+									<a href="{% url 'about' %}">About Us</a></li>
+								<li><a href="{% url 'contact' %}">Contact Us</a></li>
+							</ul>
+						</nav>
+					</div>
+					<div class="nav_w3ls" style="margin-right:2%;margin-left:2%">
+
+						<nav>
+							<label for="drop" class="toggle">Menu</label>
+							<input type="checkbox" id="drop" />
+							<ul class="menu">
+								<li class="mx-lg-4 mx-md-3 my-md-0 my-2" style="background:#6a6767;padding:8px">
+									<!-- First Tier Drop Down -->
+									<label for="drop-2" class="toggle toogle-2"> <span class="fa fa-angle-down" aria-hidden="true"></span>
+									</label>
+									<a href="#"><i class="fa fa-sign-in"></i> Login <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+									<ul style="margin-top:10%;width:80%;margin-right:5%">
+										<li style="width:100%;"><a href="{% url 'login_admin' %}" class="drop-text">Admin</a></li>
+										<li style="width:100%;"><a href="{% url 'login' %}" class="drop-text">User</a></li>
+									</ul>
+								</li>
+
+
+
+							</ul>
+						</nav>
+					</div>
+					{% endif %}
+
+
+					<!-- //nav -->
+				</div>
+			</div>
+		</div>
+		<!-- //second header -->
+
+		<!-- banner -->
+		{% block body %}
+		{% endblock %}
+		<!-- //banner -->
+	</div>
+	<!-- //main -->
+
+
+	<!-- footer bottom -->
+	<!-- copyright -->
+	<div class="copy-w3pvt" style="background:rgb(44, 164, 182);color:white">
+		<div class="container py-3">
+			<div class="row">
+				<div class="col-lg-7 w3ls_footer_grid1_left text-lg-left text-center">
+					<p style="color:white">&copy; 2021 Heart Disease Prediction. All rights reserved | Design by BinaryCoders</a>
+					</p>
+				</div>
+				<div class="col-lg-5 w3ls_footer_grid_left1_pos text-lg-right text-center mt-lg-0 mt-2">
+					<ul style="color:white">
+						<li>
+							<a href="#" style="color:white" class="facebook">
+								<span class="fa fa-facebook-f mr-2"></span>Facebook</a>
+						</li>
+						<li class="mx-3">
+							<a href="#" style="color:white" class="twitter">
+								<span class="fa fa-twitter mr-2"></span>Twitter</a>
+						</li>
+						<li>
+							<a href="#" style="color:white" class="google">
+								<span class="fa fa-google-plus mr-2"></span>Google Plus</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a href="#home" class="move-top text-center">
+    <i class="fa fa-arrow-up"></i>
+</a>
+
+<!-- Custom Cursor Elements -->
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
+
+<!-- Custom Cursor Script -->
+<script>
+    // Back to Top Button
+    const moveTop = document.querySelector('.move-top');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            moveTop.classList.add('active');
+        } else {
+            moveTop.classList.remove('active');
+        }
+    });
+    
+    // Smooth Scrolling for Anchor Links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // Custom Cursor
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+    
+    window.addEventListener('mousemove', (e) => {
+        const posX = e.clientX;
+        const posY = e.clientY;
+        
+        cursorDot.style.opacity = '1';
+        cursorOutline.style.opacity = '1';
+        
+        cursorDot.style.transform = `translate(${posX}px, ${posY}px)`;
+        
+        setTimeout(() => {
+            cursorOutline.style.transform = `translate(${posX - 17.5}px, ${posY - 17.5}px)`;
+        }, 100);
+    });
+    
+    document.addEventListener('mouseleave', () => {
+        cursorDot.style.opacity = '0';
+        cursorOutline.style.opacity = '0';
+    });
+    
+    // Add hover effect to interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .btn, [role="button"], input[type="submit"], .card, .feature-box');
+    
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            cursorOutline.style.opacity = '0.5';
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursorOutline.style.opacity = '1';
+        });
+    });
+    
+    // Add animation on scroll
+    const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.animate-fadeInUp');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+            
+            if (elementPosition < screenPosition) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    };
+    
+    // Initial check
+    animateOnScroll();
+    
+    // Check on scroll
+    window.addEventListener('scroll', animateOnScroll);
+</script>
+
+</body>
+
+</html>

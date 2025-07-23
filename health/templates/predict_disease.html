@@ -1,0 +1,316 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block head %}
+{{ block.super }}
+<!-- Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+{% block body %}
+
+<style>
+    /* Prediction Result Card Styles */
+    .prediction-card {
+        background: linear-gradient(145deg, #1e1e2f, #2d2d42);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        padding: 50px;
+        margin: 10px auto;
+        margin-top: 100px;
+        max-width: 800px;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+    }
+    
+    .prediction-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent
+        );
+        transition: 0.8s;
+    }
+    
+    .prediction-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    }
+    
+    .prediction-card:hover::before {
+        left: 100%;
+    }
+    
+    .prediction-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
+        opacity: 0;
+        transition: 0.5s;
+    }
+    
+    .prediction-card:hover::after {
+        opacity: 1;
+    }
+    
+    .result-icon {
+        font-size: 5rem;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        transition: all 0.5s ease;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+    
+    .prediction-card:hover .result-icon {
+        transform: scale(1.1) rotate(5deg);
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    }
+    
+    .result-text {
+        font-size: 2rem;
+        margin: 20px 0 25px;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: linear-gradient(45deg, #fff, #e0f7fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .prediction-card:hover .result-text {
+        letter-spacing: 2px;
+    }
+    
+    .accuracy-badge {
+        display: inline-block;
+        padding: 12px 30px;
+        border-radius: 50px;
+        background: linear-gradient(45deg, #3498db, #2ecc71);
+        color: white;
+        font-weight: 600;
+        margin: 20px 0;
+        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        transition: all 0.5s ease;
+        border: none;
+        cursor: default;
+    }
+    
+    .accuracy-badge::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #2ecc71, #3498db);
+        z-index: -1;
+        opacity: 0;
+        transition: 0.5s;
+    }
+    
+    .prediction-card:hover .accuracy-badge {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(46, 204, 113, 0.4);
+    }
+    
+    .prediction-card:hover .accuracy-badge::before {
+        opacity: 1;
+    }
+    
+    /* SVG icon styles */
+    .result-svg {
+        width: 4rem;
+        height: 4rem;
+        margin: 0.5rem 0;
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        transition: all 0.3s ease;
+    }
+    
+    .prediction-card:hover .result-svg {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
+    }
+    
+    .accuracy-badge i {
+        margin-right: 8px;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+    
+    .doctor-card {
+        background: rgb(14, 13, 13);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .doctor-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .doctor-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .doctor-info {
+        padding: 25px;
+    }
+    
+    .doctor-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    
+    .doctor-detail {
+        margin: 8px 0;
+        color: #7f8c8d;
+    }
+    
+    .doctor-detail i {
+        color: #3498db;
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .section-title {
+        text-align: center;
+        margin: 50px 0 30px;
+        position: relative;
+        padding-bottom: 15px;
+    }
+    
+    .section-title:after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, #3498db, #2ecc71);
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .no-doctors {
+        text-align: center;
+        padding: 30px;
+        background: #134577;
+        border-radius: 10px;
+        margin: 30px 0;
+    }
+</style>
+
+<section class="py-5" style="background-color: #090a0a;">
+    <div class="container">
+        <!-- Prediction Result Card -->
+        <div class="prediction-card text-center">
+            <div class="result-icon">
+                {% if pred == "0" %}
+                <svg class="result-svg" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="#2ecc71"/>
+                </svg>
+                {% else %}
+                <svg class="result-svg" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#e74c3c"/>
+                    <path d="M12 6.5c1.1 0 2 .9 2 2v7h-4v-7c0-1.1.9-2 2-2z" fill="#e74c3c"/>
+                    <path d="M12 18.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" fill="#e74c3c"/>
+                </svg>
+                {% endif %}
+            </div>
+            <h2 class="result-text">
+                {% if pred == "0" %}
+                <span style="color: #2ecc71;">You are healthy!</span>
+                {% else %}
+                <span style="color: #e74c3c;">Heart Disease Risk Detected</span>
+                {% endif %}
+            </h2>
+            <div class="accuracy-badge">
+                <i class="fas fa-chart-line"></i> Accuracy: {{ accuracy }}%
+            </div>
+            <p class="mt-3 text-muted">
+                {% if pred == "0" %}
+                Your results indicate a low risk of heart disease. Keep up the good work!
+                {% else %}
+                We recommend consulting with one of our specialists for further evaluation.
+                {% endif %}
+            </p>
+        </div>
+
+        {% if show_doctors %}
+        <!-- Doctors Section -->
+        <h2 class="section-title">Our Heart Specialists</h2>
+        <p class="text-center mb-5" style="color: #e1e5e6;">Contact our experienced cardiologists for a consultation</p>
+        
+        <div class="row">
+            {% for i in doctor %}
+            <div class="col-lg-4 col-md-6">
+                <div class="doctor-card">
+                    <img src="{{i.image.url}}" alt="{{i.user.first_name}}" class="doctor-image">
+                    <div class="doctor-info">
+                        <h3 class="doctor-name">Dr. {{i.user.first_name}} {{i.user.last_name}}</h3>
+                        <p class="doctor-detail">
+                            <i class="fas fa-envelope"></i> {{i.user.email}}
+                        </p>
+                        <p class="doctor-detail">
+                            <i class="fas fa-phone"></i> {{i.contact}}
+                        </p>
+                        <p class="doctor-detail">
+                            <i class="fas fa-map-marker-alt"></i> {{i.address}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="no-doctors text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c7d3d3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 15px;">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <h4>No doctors available at the moment</h4>
+                    <p class="text-muted">Please check back later or contact our support team.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

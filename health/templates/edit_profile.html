@@ -1,0 +1,279 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block body %}
+<style>
+    .profile-edit-container {
+        max-width: 900px;
+        margin: 15% auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-edit-container:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-3px);
+    }
+    
+    .profile-edit-header {
+        background: linear-gradient(135deg, #4b6cb7, #182848);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .profile-edit-header h2 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+    
+    .profile-edit-body {
+        padding: 2.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.8rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-group:hover {
+        transform: translateX(5px);
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #4b6cb7;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 0.85rem 1.2rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #4b6cb7;
+        box-shadow: 0 0 0 0.2rem rgba(75, 108, 183, 0.25);
+        transform: translateY(-2px);
+    }
+    
+    .form-control:hover {
+        border-color: #8a9ac7;
+    }
+    
+    .profile-image-container {
+        text-align: center;
+        margin: 1.5rem 0;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-image:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .file-upload {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+    }
+    
+    .file-upload-btn {
+        border: 2px dashed #8a9ac7;
+        color: #4b6cb7;
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .file-upload-btn:hover {
+        background-color: #e9ecef;
+        border-color: #4b6cb7;
+    }
+    
+    .file-upload-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+    
+    .btn-update {
+        background: linear-gradient(135deg, #4b6cb7, #182848);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+        margin: 2rem auto 0;
+        display: block;
+        text-align: center;
+    }
+    
+    .btn-update:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(75, 108, 183, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+        .profile-edit-container {
+            margin: 10% 3%;
+            width: auto;
+        }
+        
+        .profile-edit-body {
+            padding: 1.5rem;
+        }
+        
+        .profile-image {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .btn-update {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+</style>
+
+{% if terror == "create" %}
+<script>
+    alert('Details Updated Successfully');
+    window.location = '{% url "profile_doctor" %}';
+</script>
+{% endif %}
+
+<div class="profile-edit-container">
+    <div class="profile-edit-header">
+        <h2>Update Profile</h2>
+    </div>
+    
+    <div class="profile-edit-body">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="fname">First Name</label>
+                        <input type="text" class="form-control" id="fname" value="{{pro.user.first_name}}" name="fname" placeholder="First Name" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="lname">Last Name</label>
+                        <input type="text" class="form-control" id="lname" value="{{pro.user.last_name}}" name="lname" placeholder="Last Name" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" value="{{pro.user.email}}" name="email" placeholder="Enter Email" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="contact">Contact Number</label>
+                        <input type="text" class="form-control" id="contact" name="contact" value="{{pro.contact}}" placeholder="Enter Contact" required>
+                    </div>
+                </div>
+            </div>
+            
+            {% if error != "pat" %}
+            <div class="form-group">
+                <label class="form-label" for="type">Specialization</label>
+                <input type="text" class="form-control" id="type" name="type" value="{{pro.category}}" placeholder="Your Specialization">
+            </div>
+            {% endif %}
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="add">City</label>
+                        <input type="text" class="form-control" id="add" value="{{pro.address}}" name="add" placeholder="Enter Address" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Profile Image</label>
+                        <div class="file-upload">
+                            <label class="file-upload-btn">
+                                Choose File
+                                <input type="file" class="file-upload-input" name="image" onchange="readURL(this);">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-image-container">
+                <img id="preview" src="{{pro.image.url}}" alt="Profile Preview" class="profile-image">
+            </div>
+            
+            <button type="submit" class="btn-update">
+                Update Profile
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                document.getElementById('preview').src = e.target.result;
+                document.getElementById('preview').style.display = 'block';
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body %}
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 15% auto 5%;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .profile-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .profile-header {
+        background: linear-gradient(135deg, #4b6cb7, #182848);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .profile-header h2 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+    
+    .profile-body {
+        padding: 2.5rem;
+    }
+    
+    .profile-info {
+        display: flex;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-info:hover {
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 1.5rem;
+        transform: translateX(5px);
+    }
+    
+    .info-label {
+        flex: 1;
+        color: #4b6cb7;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    
+    .info-value {
+        flex: 2;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    .profile-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin: -75px auto 1.5rem;
+        display: block;
+        background: white;
+    }
+    
+    .profile-image:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-update {
+        background: linear-gradient(135deg, #4b6cb7, #182848);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+        margin: 2rem auto 0;
+        display: block;
+        text-align: center;
+    }
+    
+    .btn-update:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(75, 108, 183, 0.3);
+        color: white;
+    }
+    
+    @media (max-width: 768px) {
+        .profile-container {
+            margin: 5% 3%;
+            width: auto;
+        }
+        
+        .profile-info {
+            flex-direction: column;
+        }
+        
+        .info-label, .info-value {
+            flex: 1;
+            padding: 0.3rem 0;
+        }
+        
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            margin-top: -60px;
+        }
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>file</h2>
+    </div>
+    
+    <div class="text-center">
+        <img src="{{pro.image.url}}" alt="Profile Image" class="profile-image">
+    </div>
+    
+    <div class="profile-body">
+        <div class="profile-info">
+            <div class="info-label">Full Name</div>
+            <div class="info-value">{{pro.user.first_name}} {{pro.user.last_name}}</div>
+        </div>
+        
+        <div class="profile-info">
+            <div class="info-label">Email Address</div>
+            <div class="info-value">{{pro.user.email}}</div>
+        </div>
+        
+        <div class="profile-info">
+            <div class="info-label">Date of Birth</div>
+            <div class="info-value">{{pro.dob}}</div>
+        </div>
+        
+        <div class="profile-info">
+            <div class="info-label">Contact Number</div>
+            <div class="info-value">{{pro.contact}}</div>
+        </div>
+        
+        <div class="profile-info">
+            <div class="info-label">Location</div>
+            <div class="info-value">{{pro.address}}</div>
+        </div>
+        
+        {% if error != "pat" %}
+        <div class="profile-info">
+            <div class="info-label">Specialization</div>
+            <div class="info-value">{{pro.category}}</div>
+        </div>
+        {% endif %}
+        
+        <a href="{% url 'edit_profile' %}" class="btn-update">
+            Update Profile
+        </a>
+    </div>
+</div>
+{% endblock %}

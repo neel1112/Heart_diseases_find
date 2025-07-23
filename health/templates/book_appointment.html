@@ -1,0 +1,128 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container-fluid pt-5 mt-4" style="margin-top: 50%; margin-bottom: 3%;">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow" style="margin-top: 10%;">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center mb-0">Book an Appointment</h3>
+                </div>
+                <div class="card-body">
+                    <form id="appointmentForm" method="post" action="{% url 'book_appointment' %}">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label text-light">Email</label>
+                                <input type="email" class="form-control bg-secondary text-white" id="email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label text-light">Phone Number</label>
+                            <input type="tel" class="form-control bg-secondary text-white" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="doctor" class="form-label text-light">Select Doctor</label>
+                            <select class="form-select bg-secondary text-white" id="doctor" name="doctor" required>
+                                <option value="" selected disabled>Select a doctor</option>
+                                {% for doctor in doctors %}
+                                    <option value="{{ doctor.id }}">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }} ({{ doctor.category }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="date" class="form-label text-light">Appointment Date</label>
+                                <input type="date" class="form-control bg-secondary text-white" id="date" name="date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="time" class="form-label text-light">Preferred Time</label>
+                                <select class="form-select bg-secondary text-white" id="time" name="time" required>
+                                    <option value="" selected disabled>Select time</option>
+                                    <option value="09:00">09:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="12:00">12:00 PM</option>
+                                    <option value="14:00">02:00 PM</option>
+                                    <option value="15:00">03:00 PM</option>
+                                    <option value="16:00">04:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="symptoms" class="form-label text-light">Symptoms or Reason for Visit</label>
+                            <textarea class="form-control bg-secondary text-white" id="symptoms" name="symptoms" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'patient_home' %}" class="btn btn-outline-light me-md-2">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calendar-check me-1"></i> Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="appointmentSuccessModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Appointment Booked Successfully!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Your appointment has been booked successfully. You will receive a confirmation email shortly.</p>
+                <p><strong>Note:</strong> Please arrive 15 minutes before your scheduled appointment time.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'patient_home' %}" class="btn btn-primary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').min = today;
+        
+        // Handle form submission
+        const form = document.getElementById('appointmentForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Here you would typically make an AJAX call to submit the form
+            // For demo purposes, we'll just show the success modal
+            
+            // Show success modal
+            const successModal = new bootstrap.Modal(document.getElementById('appointmentSuccessModal'));
+            successModal.show();
+            
+            // Optional: Submit the form after a delay
+            setTimeout(() => {
+                form.submit();
+            }, 3000);
+        });
+    });
+</script>
+{% endblock %}
