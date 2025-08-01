@@ -3,8 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, redirect
-import datetime
-import datetime
+from datetime import datetime, date, time as dt_time
 
 from sklearn.ensemble import GradientBoostingClassifier
 
@@ -138,7 +137,7 @@ def Signup_User(request):
         add = request.POST['add']
         type = request.POST['type']
         im = request.FILES['image']
-        dat = datetime.date.today()
+        dat = date.today()
         user = User.objects.create_user(email=e, username=u, password=p, first_name=f,last_name=l)
         if type == "Patient":
             Patient.objects.create(user=user,contact=con,address=add,image=im,dob=d)
@@ -311,7 +310,7 @@ def view_search_pat(request):
     doc = None
     try:
         doc = Doctor.objects.get(user=request.user)
-        data = Search_Data.objects.filter(patient__address__icontains=doc.address).order_by('-id')
+        data = Search_Data.objects.filter(patient_address_icontains=doc.address).order_by('-id')
     except:
         try:
             doc = Patient.objects.get(user=request.user)

@@ -2,35 +2,35 @@
 {% load static %}
 
 {% block body %}
-<div class="container-fluid pt-5 mt-4" style="margin-top: 50%; margin-bottom: 3%;">
+<div class="container-fluid pt-5 mt-4" class="bg-light mt-5 mb-3">
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <div class="card shadow" style="margin-top: 10%;">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="text-center mb-0">Book an Appointment</h3>
+            <div class="card shadow bg-light mt-5">
+                <div class="card-header" style="background-color: #3E5F44; color: white;">
+                    <h3 class="text-center mb-0 text-white">Book an Appointment</h3>
                 </div>
-                <div class="card-body">
-                    <form id="appointmentForm" method="post" action="{% url 'book_appointment' %}">
+                <div class="card-body"> 
+                    <form id="appointmentForm" method="post" action="{% url 'book_appointment' %}" class="bg-light">
                         {% csrf_token %}
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
+                                <label for="name" class="form-label text-secondary">Full Name</label>
+                                <input type="text" class="form-control border border-secondary" id="name" name="name" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="email" class="form-label text-light">Email</label>
-                                <input type="email" class="form-control bg-secondary text-white" id="email" name="email" required>
+                                <label for="email" class="form-label text-secondary">Email</label>
+                                <input type="email" class="form-control border border-secondary" id="email" name="email" required>
                             </div>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="phone" class="form-label text-light">Phone Number</label>
-                            <input type="tel" class="form-control bg-secondary text-white" id="phone" name="phone" required>
+                            <label for="phone" class="form-label text-secondary">Phone Number</label>
+                            <input type="tel" class="form-control border border-secondary" id="phone" name="phone" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="doctor" class="form-label text-light">Select Doctor</label>
-                            <select class="form-select bg-secondary text-white" id="doctor" name="doctor" required>
+                            <label for="doctor" class="form-label text-secondary">Select Doctor</label>
+                            <select class="form-select border border-secondary" id="doctor" name="doctor" required>
                                 <option value="" selected disabled>Select a doctor</option>
                                 {% for doctor in doctors %}
                                     <option value="{{ doctor.id }}">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }} ({{ doctor.category }})</option>
@@ -40,12 +40,12 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="date" class="form-label text-light">Appointment Date</label>
-                                <input type="date" class="form-control bg-secondary text-white" id="date" name="date" required>
+                                <label for="date" class="form-label text-secondary">Appointment Date</label>
+                                <input type="date" class="form-control border border-secondary" id="date" name="date" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="time" class="form-label text-light">Preferred Time</label>
-                                <select class="form-select bg-secondary text-white" id="time" name="time" required>
+                                <label for="time" class="form-label text-secondary">Preferred Time</label>
+                                <select class="form-select border border-secondary" id="time" name="time" required>
                                     <option value="" selected disabled>Select time</option>
                                     <option value="09:00">09:00 AM</option>
                                     <option value="10:00">10:00 AM</option>
@@ -59,18 +59,20 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="symptoms" class="form-label text-light">Symptoms or Reason for Visit</label>
-                            <textarea class="form-control bg-secondary text-white" id="symptoms" name="symptoms" rows="3" required></textarea>
+                            <label for="symptoms" class="form-label text-secondary">Symptoms or Reason for Visit</label>
+                            <textarea class="form-control border border-secondary" id="symptoms" name="symptoms" rows="3" required></textarea>
                         </div>
                         
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="{% url 'patient_home' %}" class="btn btn-outline-light me-md-2">
-                                <i class="fas fa-times me-1"></i> Cancel
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-calendar-check me-1"></i> Book Appointment
-                            </button>
-                        </div>
+                            <div class="col-12 mt-4">
+                                <div class="d-flex justify-content-end gap-3">
+                                    <a href="{% url 'patient_home' %}" class="btn btn-outline-primary px-4">
+                                        <i class="fas fa-times me-2"></i> Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="fas fa-calendar-check me-2"></i> Book Appointment
+                                    </button>
+                                </div>
+                            </div>
                     </form>
                 </div>
             </div>
@@ -80,18 +82,36 @@
 
 <!-- Success Modal -->
 <div class="modal fade" id="appointmentSuccessModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">Appointment Booked Successfully!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0" class="bg-light">
+            <div class="modal-header bg-success text-white border-0">
+                <h5 class="modal-title d-flex align-items-center">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Appointment Booked Successfully!
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <p>Your appointment has been booked successfully. You will receive a confirmation email shortly.</p>
-                <p><strong>Note:</strong> Please arrive 15 minutes before your scheduled appointment time.</p>
+            <div class="modal-body p-4">
+                <div class="text-center mb-4">
+                    <i class="fas fa-calendar-check text-success" style="font-size: 4rem; margin-bottom: 1.5rem;"></i>
+                    <p class="text-muted">Your appointment has been booked successfully.</p>
+                    <p class="text-muted">You will receive a confirmation email with all the details shortly.</p>
+                </div>
+                <div class="alert alert-light">
+                    <div class="d-flex">
+                        <i class="fas fa-info-circle text-primary mt-1 me-2"></i>
+                        <div>
+                            <h6 class="mb-1">Important Note</h6>
+                            <p class="small mb-0">Please arrive 15 minutes before your scheduled appointment time.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <a href="{% url 'patient_home' %}" class="btn btn-primary">Back to Dashboard</a>
+            <div class="modal-footer border-0 bg-light">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{% url 'patient_home' %}" class="btn btn-primary px-4">
+                    <i class="fas fa-tachometer-alt me-2"></i>Back to Dashboard
+                </a>
             </div>
         </div>
     </div>
@@ -104,25 +124,104 @@
     // Set minimum date to today
     document.addEventListener('DOMContentLoaded', function() {
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').min = today;
+        const dateInput = document.getElementById('date');
+        
+        if (dateInput) {
+            dateInput.min = today;
+            
+            // Set default time to 9:00 AM if no time is selected
+            const timeSelect = document.getElementById('time');
+            if (timeSelect) {
+                dateInput.addEventListener('change', function() {
+                    const selectedDate = new Date(this.value);
+                    const today = new Date();
+                    
+                    // If selected date is today, disable past times
+                    if (this.value === today.toISOString().split('T')[0]) {
+                        const currentHour = today.getHours();
+                        const options = timeSelect.options;
+                        
+                        for (let i = 0; i < options.length; i++) {
+                            const hour = parseInt(options[i].value.split(':')[0]);
+                            if (hour < currentHour) {
+                                options[i].disabled = true;
+                            } else {
+                                options[i].disabled = false;
+                            }
+                        }
+                        
+                        // Select the first available time if current selection is disabled
+                        if (timeSelect.selectedOptions[0].disabled) {
+                            for (let i = 0; i < options.length; i++) {
+                                if (!options[i].disabled && options[i].value) {
+                                    timeSelect.selectedIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        // Enable all time slots for future dates
+                        const options = timeSelect.options;
+                        for (let i = 0; i < options.length; i++) {
+                            options[i].disabled = false;
+                        }
+                    }
+                });
+            }
+        }
         
         // Handle form submission
         const form = document.getElementById('appointmentForm');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Basic form validation
+                let isValid = true;
+                const requiredFields = form.querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+                
+                if (isValid) {
+                    // Show loading state
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // Show success modal
+                        const successModal = new bootstrap.Modal(document.getElementById('appointmentSuccessModal'));
+                        successModal.show();
+                        
+                        // Reset form
+                        form.reset();
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                        
+                        // Optional: Submit the form after showing success message
+                        // form.submit();
+                    }, 1500);
+                }
+            });
             
-            // Here you would typically make an AJAX call to submit the form
-            // For demo purposes, we'll just show the success modal
-            
-            // Show success modal
-            const successModal = new bootstrap.Modal(document.getElementById('appointmentSuccessModal'));
-            successModal.show();
-            
-            // Optional: Submit the form after a delay
-            setTimeout(() => {
-                form.submit();
-            }, 3000);
-        });
+            // Add input validation feedback
+            form.querySelectorAll('input, select, textarea').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.checkValidity()) {
+                        this.classList.remove('is-invalid');
+                    }
+                });
+            });
+        }
     });
 </script>
 {% endblock %}
