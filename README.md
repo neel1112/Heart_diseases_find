@@ -1,136 +1,84 @@
 # Heart Disease Prediction System
 
-A Django-based web application for predicting heart diseases using machine learning algorithms.
+A Professional Django-Based Web Application for Heart Disease Prediction
+
+---
+
+## Overview
+
+The Heart Disease Prediction System is a robust, full-stack web application designed to assist healthcare professionals and patients in predicting the risk of heart disease using advanced machine learning algorithms. The platform offers a comprehensive suite of features including user management, doctor-patient interaction, appointment scheduling, feedback collection, and an intuitive admin dashboard. The system is built with scalability, security, and usability in mind, making it suitable for both clinical and research environments.
+
+---
+
+## Table of Contents
+
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Requirements](#requirements)
+- [Installation & Setup](#installation--setup)
+- [Deployment Guide](#deployment-guide)
+- [Environment Variables](#environment-variables)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
 
 ## Features
 
-- User authentication and authorization
-- Doctor and patient management
-- Heart disease prediction using ML models
-- Appointment scheduling system
-- Feedback system
-- Admin dashboard
+- **User Authentication & Authorization**: Secure login and registration for doctors, patients, and admins.
+- **Doctor & Patient Management**: Manage profiles, view medical history, and interact securely.
+- **Heart Disease Prediction**: Integrated ML models for accurate risk assessment based on patient data.
+- **Appointment Scheduling**: Book, view, and manage appointments with healthcare professionals.
+- **Feedback System**: Collect and review feedback from users to improve service quality.
+- **Admin Dashboard**: Comprehensive dashboard for managing users, appointments, and system settings.
+- **Responsive UI**: Modern, mobile-friendly interface using Bootstrap.
+
+---
+
+## Screenshots
+
+Below are some screenshots demonstrating key features of the system:
+
+<p align="center">
+  <img src="screenshots/login.png" alt="Login Page" width="600"/>
+  <br>
+  <em>Login Page</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/dashboard.png" alt="Admin Dashboard" width="600"/>
+  <br>
+  <em>Admin Dashboard</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/prediction_form.png" alt="Prediction Form" width="600"/>
+  <br>
+  <em>Heart Disease Prediction Form</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/appointment.png" alt="Appointment Scheduling" width="600"/>
+  <br>
+  <em>Appointment Scheduling</em>
+</p>
+
+*For more screenshots, see the [screenshots](./screenshots) folder.*
+
+---
 
 ## Technology Stack
 
-- **Backend**: Django 4.2.7
-- **Database**: SQLite3
-- **ML Libraries**: scikit-learn, pandas, numpy
-- **Frontend**: HTML, CSS, Bootstrap
-- **Deployment**: Render.com
+- **Backend**: Django 4.2.7 (Python 3.11+)
+- **Database**: SQLite3 (default, can be configured for PostgreSQL/MySQL)
+- **Machine Learning**: scikit-learn, pandas, numpy
+- **Frontend**: HTML5, CSS3, Bootstrap 5
+- **Deployment**: Render.com (compatible with other cloud platforms)
+- **Other Tools**: Gunicorn, pip, virtualenv
 
-## Quick Start
-
-### Prerequisites
-
-- Python 3.11+
-- pip
-
-### Local Development
-
-1. Clone the repository:
-```bash
-git clone https://github.com/neel1112/Heart_diseases_find.git
-cd Heart_diseases_find
-```
-
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Run migrations:
-```bash
-python manage.py migrate
-```
-
-5. Create a superuser:
-```bash
-python manage.py createsuperuser
-```
-
-6. Run the development server:
-```bash
-python manage.py runserver
-```
-
-7. Open http://localhost:8000 in your browser
-
-## Deployment
-
-### Render.com Deployment
-
-1. Connect your GitHub repository to Render
-2. Set the following environment variables:
-   - `SECRET_KEY`: Your Django secret key
-   - `DEBUG`: False for production
-3. Set build command: `./build.sh`
-4. Set start command: `gunicorn health_desease.wsgi:application`
-
-### Environment Variables
-
-- `SECRET_KEY`: Django secret key for production
-- `DEBUG`: Set to 'False' for production
-- `ALLOWED_HOSTS`: Comma-separated list of allowed hosts
+---
 
 ## Project Structure
-
-```
-├── health/                 # Main Django app
-│   ├── models.py          # Database models
-│   ├── views.py           # View functions
-│   ├── templates/         # HTML templates
-│   └── static/           # Static files (CSS, JS, images)
-├── health_desease/        # Django project settings
-│   ├── settings.py       # Development settings
-│   ├── production_settings.py  # Production settings
-│   └── urls.py           # URL configuration
-├── Machine_Learning/      # ML models and data
-├── requirements.txt       # Python dependencies
-├── build.sh              # Build script for deployment
-└── runtime.txt           # Python version specification
-```
-
-## Recent Updates
-
-### Version 4.2.7 Compatibility
-
-- Updated Django from 3.1.6 to 4.2.7
-- Updated all dependencies to compatible versions
-- Removed deprecated `USE_L10N` setting
-- Added `DEFAULT_AUTO_FIELD` setting
-- Fixed model compatibility issues
-- Enhanced build script with better error handling
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Build fails with setuptools error**: Ensure you're using Python 3.11+ and the updated requirements.txt
-2. **Database migration errors**: Run `python manage.py makemigrations` followed by `python manage.py migrate`
-3. **Static files not loading**: Run `python manage.py collectstatic`
-
-### Deployment Issues
-
-- Check the build logs in Render dashboard
-- Ensure all environment variables are set correctly
-- Verify the Python version in runtime.txt matches your deployment platform
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License.
-
