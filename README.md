@@ -484,179 +484,6 @@ python manage.py runserver 0.0.0.0:8000
   <img src="https://img.shields.io/badge/Deployment-Ready-success?style=for-the-badge" alt="Deployment Ready">
 </div>
 
-#### **Step-by-Step Production Setup**
-
-1. **Environment Configuration**
-   ```bash
-   # Set production environment
-   export DJANGO_SETTINGS_MODULE=health_desease.production_settings
-   export DEBUG=False
-   ```
-
-2. **Database Setup**
-   ```bash
-   # Run migrations
-   python manage.py migrate
-   
-   # Collect static files
-   python manage.py collectstatic
-   ```
-
-3. **WSGI Server Setup**
-   ```bash
-   # Install Gunicorn
-   pip install gunicorn
-   
-   # Start Gunicorn
-   gunicorn health_desease.wsgi:application
-   ```
-
-4. **Reverse Proxy (Nginx)**
-   ```nginx
-   server {
-       listen 80;
-       server_name your-domain.com;
-       
-       location / {
-           proxy_pass http://127.0.0.1:8000;
-           proxy_set_header Host $host;
-           proxy_set_header X-Real-IP $remote_addr;
-       }
-       
-       location /static/ {
-           alias /path/to/your/static/files/;
-       }
-   }
-   ```
-
-### 📦 **Docker Deployment**
-
-```dockerfile
-# Dockerfile
-FROM python:3.9-slim
-
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY . .
-RUN python manage.py collectstatic --noinput
-
-EXPOSE 8000
-CMD ["gunicorn", "health_desease.wsgi:application", "--bind", "0.0.0.0:8000"]
-```
-
----
-
-## 🤝 Contributing
-
-<div align="center">
-  <img src="https://img.shields.io/badge/Contributions-Welcome-brightgreen?style=for-the-badge" alt="Contributions Welcome">
-</div>
-
-We welcome contributions! Please follow these steps:
-
-### 📋 **Contribution Guidelines**
-
-1. **Fork the Repository**
-   ```bash
-   git clone https://github.com/yourusername/health-disease-prediction.git
-   cd health-disease-prediction
-   ```
-
-2. **Create Feature Branch**
-   ```bash
-   git checkout -b feature/AmazingFeature
-   ```
-
-3. **Make Changes**
-   ```bash
-   # Make your changes
-   git add .
-   git commit -m "Add some AmazingFeature"
-   ```
-
-4. **Push Changes**
-   ```bash
-   git push origin feature/AmazingFeature
-   ```
-
-5. **Open Pull Request**
-   - Go to GitHub and create a Pull Request
-   - Describe your changes clearly
-   - Include screenshots if UI changes
-
-### 🎯 **Development Setup**
-
-```bash
-# Install development dependencies
-pip install -r requirements.txt
-
-# Run tests
-python manage.py test
-
-# Check code style
-flake8 health/
-```
-
----
-
-## 📝 License
-
-<div align="center">
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
-</div>
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2024 Your Name
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-```
-
----
-
-## 👨‍💻 Author
-
-<div align="center">
-  <img src="https://img.shields.io/badge/Author-Your%20Name-blue?style=for-the-badge" alt="Author">
-</div>
-
-**Your Name** - *Full Stack Developer & ML Engineer*
-
-| Platform | Link |
-|----------|------|
-| 🐙 **GitHub** | [@yourusername](https://github.com/yourusername) |
-| 💼 **LinkedIn** | [Your LinkedIn](https://linkedin.com/in/yourprofile) |
-| 📧 **Email** | your.email@example.com |
-| 🌐 **Website** | [Your Website](https://yourwebsite.com) |
-
----
-
-## 🙏 Acknowledgments
-
-<div align="center">
-  <img src="https://img.shields.io/badge/Thanks-To%20All%20Contributors-brightgreen?style=for-the-badge" alt="Thanks">
-</div>
-
-- 🐍 **Django Community** - For the excellent web framework
-- 🤖 **Scikit-learn Team** - For powerful machine learning capabilities
-- �� **Bootstrap Team** - For responsive design components
-- 👥 **All Contributors** - For valuable feedback and testing
-- 🏥 **Healthcare Community** - For domain expertise and validation
-
----
 
 ## 📞 Support
 
@@ -664,21 +491,11 @@ copies or substantial portions of the Software.
   <img src="https://img.shields.io/badge/Support-Available-blue?style=for-the-badge" alt="Support">
 </div>
 
-### 🆘 **Need Help?**
 
-| Support Channel | Description | Response Time |
-|-----------------|-------------|---------------|
-| 🐛 **GitHub Issues** | Bug reports and feature requests | 24-48 hours |
-| 📧 **Email Support** | Direct email support | 12-24 hours |
-| 📚 **Documentation** | Comprehensive guides | Instant |
-| 💬 **Discussions** | Community discussions | Variable |
 
 ### 📞 **Contact Information**
 
-- **Email**: your.email@example.com
-- **GitHub Issues**: [Create Issue](https://github.com/yourusername/health-disease-prediction/issues)
-- **Documentation**: [Wiki Link]
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/health-disease-prediction/discussions)
+- **Email**: neelmerja@gmail.com
 
 ---
 
@@ -695,5 +512,5 @@ copies or substantial portions of the Software.
 ---
 
 <div align="center">
-  <sub>Last updated: January 2024 | Built with ❤️ for the healthcare community</sub>
+  <sub>Last updated: August 2025| Built with ❤️ for the healthcare community</sub>
 </div>
